@@ -10,6 +10,7 @@ plate_size = 142.5; // [120:0.1:180]
 plate_thickness = 5; // [3:0.1:10]
 plate_lip_thickness = 1; // [0.6:0.1:2]
 corner_pad_diameter = 32; // [24:0.1:48]
+spine_width = 24; // [16:0.1:36]
 rib_width = 13; // [8:0.1:24]
 end_rail_width = 12; // [8:0.1:24]
 skeleton_corner_radius = 6; // [2:0.1:12]
@@ -58,7 +59,8 @@ LOCKPIN_SIDE = LOCKPIN_HOLE_SIDE_LENGTH;
 LOCKPIN_CHAMFER = LOCKPIN_HOLE_CHAMFER;
 SLEEVE_INNER_SIDE = BASE_UNIT + sleeve_tolerance;
 SLEEVE_OUTER_WIDTH = BASE_UNIT + 2 * sleeve_wall + sleeve_tolerance;
-SLEEVE_OUTER_HEIGHT = BASE_UNIT + sleeve_wall + sleeve_tolerance;
+SLEEVE_SIDE_HEIGHT = SLEEVE_INNER_SIDE;
+SLEEVE_ATTACH_OVERLAP = 0.05;
 SLEEVE_LENGTH = sleeve_units * BASE_UNIT - sleeve_tolerance;
 SLEEVE_LOCKPIN_CENTER_Z = BASE_UNIT / 2 + sleeve_tolerance / 2;
 PLATE_BODY_THICKNESS = plate_thickness - plate_lip_thickness;
@@ -146,6 +148,8 @@ module rib_between_2d(start, end, width) {
 
 module skeleton_base_2d() {
     union() {
+        rounded_rect_2d([spine_width, plate_size], skeleton_corner_radius);
+
         for (y = [-1, 1]) {
             translate([0, y * slider_holes_span / 2])
                 rounded_rect_2d([plate_size - corner_pad_diameter, end_rail_width], skeleton_corner_radius);
@@ -195,11 +199,17 @@ module lockpin_holes() {
 module homeracker_sleeve() {
     color(debug_colors ? HR_YELLOW : HR_YELLOW)
     difference() {
-        translate([0, 0, SLEEVE_OUTER_HEIGHT / 2])
-            centered_box([SLEEVE_OUTER_WIDTH, SLEEVE_LENGTH, SLEEVE_OUTER_HEIGHT]);
-
-        translate([0, 0, SLEEVE_INNER_SIDE / 2 - EPSILON])
-            centered_box([SLEEVE_INNER_SIDE, SLEEVE_LENGTH + 2 * EPSILON, SLEEVE_INNER_SIDE + 2 * EPSILON]);
+        // The AP bracket's center spine acts as the sleeve roof.
+        union() {
+            for (side = [-1, 1]) {
+                translate([
+                    side * (SLEEVE_INNER_SIDE / 2 + sleeve_wall / 2),
+                    0,
+                    (SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP) / 2
+                ])
+                    centered_box([sleeve_wall, SLEEVE_LENGTH, SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP]);
+            }
+        }
 
         lockpin_holes();
     }
@@ -209,12 +219,13 @@ module mount() {
     assert(plate_size >= slider_holes_span + corner_pad_diameter, "Bracket is too small for the corner pads.");
     assert(plate_lip_thickness > 0 && plate_lip_thickness < plate_thickness, "Plate lip thickness must be less than total plate thickness.");
     assert(corner_pad_diameter > slider_big_diameter * slider_recess_scale + 8, "Corner pads are too small for recessed slider holes.");
+    assert(spine_width > SLEEVE_OUTER_WIDTH, "Spine width must be wider than the HomeRacker sleeve.");
     assert(detent_depth * 2 < slider_small_diameter + slider_clearance, "Detent bumps close the slider slot completely.");
     assert(sleeve_units > 0, "Sleeve units must be positive.");
 
     union() {
         homeracker_sleeve();
-        translate([0, 0, SLEEVE_OUTER_HEIGHT])
+        translate([0, 0, SLEEVE_SIDE_HEIGHT])
             ap_bracket();
     }
 }
