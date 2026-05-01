@@ -39,6 +39,7 @@ identity_label_size = 3.6; // [2:0.1:6]
 repo_label_size = 2.8; // [1.5:0.1:4]
 label_depth = 0.35; // [0.1:0.05:0.8]
 clip_label_size = 2.8; // [2:0.1:5]
+clip_fit_label_size = 3.8; // [2:0.1:5]
 clip_pair_gap = 12; // [4:0.1:30]
 
 /* [HomeRacker Sleeve] */
@@ -283,9 +284,8 @@ module clip_labels_2d(side) {
     if (label_enabled) {
         side_name = side < 0 ? "LEFT" : "RIGHT";
 
-        label_text(side_name, [side * SLEEVE_SEGMENT_OFFSET, 7], spin = 0, size = label_size);
-        label_text(str("S", ACTIVE_SLIDER_SMALL_DIAMETER), [side * SLEEVE_SEGMENT_OFFSET, -2], spin = 0, size = label_size);
-        label_text(str("D", ACTIVE_DETENT_DEPTH), [side * SLEEVE_SEGMENT_OFFSET, -9], spin = 0, size = label_size);
+        label_text(side_name, [side * SLEEVE_SEGMENT_OFFSET, 5], spin = 0, size = label_size);
+        label_text(str("S", ACTIVE_SLIDER_SMALL_DIAMETER, " D", ACTIVE_DETENT_DEPTH), [side * SLEEVE_SEGMENT_OFFSET, -5], spin = 0, size = clip_fit_label_size);
         label_text("CISCO AP", [side * slider_holes_span / 2, CLIP_ARM_LABEL_OFFSET], spin = 90, size = clip_label_size);
         label_text("HOMERACKER", [side * slider_holes_span / 2, -CLIP_ARM_LABEL_OFFSET], spin = 90, size = clip_label_size);
     }
