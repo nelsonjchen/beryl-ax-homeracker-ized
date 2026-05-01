@@ -10,7 +10,6 @@ plate_size = 142.5; // [120:0.1:180]
 plate_thickness = 5; // [3:0.1:10]
 plate_lip_thickness = 1; // [0.6:0.1:2]
 corner_pad_diameter = 32; // [24:0.1:48]
-spine_width = 24; // [16:0.1:36]
 rib_width = 13; // [8:0.1:24]
 end_rail_width = 12; // [8:0.1:24]
 skeleton_corner_radius = 6; // [2:0.1:12]
@@ -147,8 +146,6 @@ module rib_between_2d(start, end, width) {
 
 module skeleton_base_2d() {
     union() {
-        rounded_rect_2d([spine_width, plate_size], skeleton_corner_radius);
-
         for (y = [-1, 1]) {
             translate([0, y * slider_holes_span / 2])
                 rounded_rect_2d([plate_size - corner_pad_diameter, end_rail_width], skeleton_corner_radius);
@@ -212,7 +209,6 @@ module mount() {
     assert(plate_size >= slider_holes_span + corner_pad_diameter, "Bracket is too small for the corner pads.");
     assert(plate_lip_thickness > 0 && plate_lip_thickness < plate_thickness, "Plate lip thickness must be less than total plate thickness.");
     assert(corner_pad_diameter > slider_big_diameter * slider_recess_scale + 8, "Corner pads are too small for recessed slider holes.");
-    assert(spine_width > SLEEVE_OUTER_WIDTH, "Spine width must be wider than the HomeRacker sleeve.");
     assert(detent_depth * 2 < slider_small_diameter + slider_clearance, "Detent bumps close the slider slot completely.");
     assert(sleeve_units > 0, "Sleeve units must be positive.");
 
