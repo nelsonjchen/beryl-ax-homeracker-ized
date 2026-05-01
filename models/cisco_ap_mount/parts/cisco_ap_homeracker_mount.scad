@@ -7,7 +7,7 @@
 
 /* [Bracket] */
 plate_size = 142.5; // [120:0.1:180]
-plate_thickness = 5; // [3:0.1:10]
+plate_thickness = 3; // [2:0.1:10]
 plate_lip_thickness = 1; // [0.6:0.1:2]
 corner_pad_diameter = 32; // [24:0.1:48]
 spine_width = 24; // [16:0.1:36]
@@ -18,14 +18,14 @@ skeleton_corner_radius = 6; // [2:0.1:12]
 /* [Cisco AP Slider Holes] */
 slider_holes_span = 108; // [80:0.1:130]
 slider_big_diameter = 10.5; // [8:0.1:14]
-slider_small_diameter = 10.5*(22/36); // [5:0.1:10]
+slider_small_diameter = 6.42; // [5:0.1:10]
 slider_length = 21.25; // [16:0.1:30]
 slider_clearance = 0.25; // [0:0.05:1]
 slider_recess_scale = 1.1; // [1:0.01:1.25]
 
 /* [AP Retention Detent] */
 detent_enabled = true; // [false,true]
-detent_depth = 0.5; // [0.1:0.05:1.2]
+detent_depth = 0.4; // [0.1:0.05:1.2]
 detent_length = 2.6; // [1:0.1:5]
 detent_clearance_from_seat = 0; // [0:0.1:4]
 
@@ -56,6 +56,7 @@ LOCKPIN_HOLE_CHAMFER = 0.8;
 HR_BLUE = "#0056b3";
 HR_YELLOW = "#f7b600";
 HR_CHARCOAL = "#333333";
+BRACKET_WHITE = "#f5f5f0";
 
 LOCKPIN_SIDE = LOCKPIN_HOLE_SIDE_LENGTH;
 LOCKPIN_CHAMFER = LOCKPIN_HOLE_CHAMFER;
@@ -184,7 +185,7 @@ module bracket_layer_2d(recess = false) {
 }
 
 module ap_bracket() {
-    color(debug_colors ? HR_BLUE : HR_CHARCOAL)
+    color(debug_colors ? HR_BLUE : BRACKET_WHITE)
     union() {
         linear_extrude(PLATE_BODY_THICKNESS)
             bracket_layer_2d(recess = true);

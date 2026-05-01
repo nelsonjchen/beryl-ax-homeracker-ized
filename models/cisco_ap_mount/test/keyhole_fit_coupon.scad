@@ -4,7 +4,7 @@
 // slot diameter, and retention detent before printing the full HomeRacker mount.
 
 /* [Coupon] */
-coupon_thickness = 5; // [3:0.1:10]
+coupon_thickness = 3; // [2:0.1:10]
 coupon_lip_thickness = 1; // [0.6:0.1:2]
 coupon_pad_diameter = 32; // [24:0.1:48]
 coupon_arm_width = 13; // [8:0.1:24]
