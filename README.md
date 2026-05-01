@@ -56,7 +56,7 @@ The production model engraves `CISCO AP HOMERACKER`, `S6.6`, and `D0.25` into th
 
 ## Two-Piece Clips
 
-The two-piece clip mode splits the mount into left/right clips, each carrying two Cisco AP keyholes, one HomeRacker sleeve segment, and two lock-pin holes. The pieces are intentionally labeled with side, the `CISCO AP HOMERACKER` mount name split across the rails, and their tighter standalone `S6.42 D0.4` fit settings so each loose part remains identifiable during installation.
+The two-piece clip mode splits the mount into left/right clips, each carrying two Cisco AP keyholes, one HomeRacker sleeve segment, and two lock-pin holes. The pair STL lays the clips next to each other for slicer import, not at installed AP spacing. The pieces are intentionally labeled with side, the `CISCO AP HOMERACKER` mount name split across the rails, and their tighter standalone `S6.42 D0.4` fit settings so each loose part remains identifiable during installation.
 
 The clips do not mechanically prevent being pinned in the wrong HomeRacker holes; if spacing is wrong, move the clip to a different hole pair and retry the AP slide fit.
 

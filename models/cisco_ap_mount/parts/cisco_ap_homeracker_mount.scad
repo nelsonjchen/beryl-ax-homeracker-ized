@@ -39,6 +39,7 @@ identity_label_size = 3.6; // [2:0.1:6]
 repo_label_size = 2.8; // [1.5:0.1:4]
 label_depth = 0.35; // [0.1:0.05:0.8]
 clip_label_size = 2.8; // [2:0.1:5]
+clip_pair_gap = 12; // [4:0.1:30]
 
 /* [HomeRacker Sleeve] */
 sleeve_units = 9; // [3:1:12]
@@ -82,6 +83,7 @@ SLEEVE_SEGMENT_OFFSET = (sleeve_units - sleeve_holes_per_end) * BASE_UNIT / 2;
 SLEEVE_LOCKPIN_CENTER_Z = BASE_UNIT / 2 + sleeve_tolerance / 2;
 PLATE_BODY_THICKNESS = plate_thickness - plate_lip_thickness;
 CLIP_ARM_LABEL_OFFSET = (spine_width / 2 + slider_holes_span / 2 - corner_pad_diameter / 2) / 2;
+CLIP_PAIR_SPACING = SLEEVE_ROOF_SEGMENT_LENGTH + clip_pair_gap;
 ACTIVE_SLIDER_SMALL_DIAMETER = part_mode == 0 ? slider_small_diameter : clip_slider_small_diameter;
 ACTIVE_DETENT_DEPTH = part_mode == 0 ? detent_depth : clip_detent_depth;
 
@@ -250,6 +252,13 @@ module label_text(text_value, position, spin = 0, size = label_size) {
         text(text_value, size = size, halign = "center", valign = "center", font = "Liberation Sans:style=Bold");
 }
 
+module bottom_label_text(text_value, position, spin = 0, size = label_size) {
+    translate(position)
+        rotate(spin)
+        mirror([1, 0])
+        text(text_value, size = size, halign = "center", valign = "center", font = "Liberation Sans:style=Bold");
+}
+
 function sleeve_label_position(position) =
     sleeve_rotation == 90 ? [-position[1], position[0]] : position;
 
@@ -274,10 +283,20 @@ module clip_labels_2d(side) {
     if (label_enabled) {
         side_name = side < 0 ? "LEFT" : "RIGHT";
 
-        label_text(side_name, [side * SLEEVE_SEGMENT_OFFSET, 5], spin = 0, size = label_size);
-        label_text(str("S", ACTIVE_SLIDER_SMALL_DIAMETER, " D", ACTIVE_DETENT_DEPTH), [side * SLEEVE_SEGMENT_OFFSET, -5], spin = 0, size = clip_label_size);
+        label_text(side_name, [side * SLEEVE_SEGMENT_OFFSET, 7], spin = 0, size = label_size);
+        label_text(str("S", ACTIVE_SLIDER_SMALL_DIAMETER), [side * SLEEVE_SEGMENT_OFFSET, -2], spin = 0, size = label_size);
+        label_text(str("D", ACTIVE_DETENT_DEPTH), [side * SLEEVE_SEGMENT_OFFSET, -9], spin = 0, size = label_size);
         label_text("CISCO AP", [side * slider_holes_span / 2, CLIP_ARM_LABEL_OFFSET], spin = 90, size = clip_label_size);
         label_text("HOMERACKER", [side * slider_holes_span / 2, -CLIP_ARM_LABEL_OFFSET], spin = 90, size = clip_label_size);
+    }
+}
+
+module clip_bottom_labels_2d(side) {
+    if (label_enabled) {
+        side_name = side < 0 ? "LEFT" : "RIGHT";
+
+        for (arm_side = [-1, 1])
+            bottom_label_text(side_name, [side * slider_holes_span / 2, arm_side * CLIP_ARM_LABEL_OFFSET], spin = 90, size = label_size);
     }
 }
 
@@ -307,6 +326,9 @@ module ap_clip(side) {
             translate([0, 0, PLATE_BODY_THICKNESS])
                 linear_extrude(plate_lip_thickness)
                 clip_layer_2d(side, recess = false);
+            translate([0, 0, -label_depth])
+                linear_extrude(label_depth)
+                clip_bottom_labels_2d(side);
         }
 
         translate([0, 0, plate_thickness - label_depth + EPSILON])
@@ -394,7 +416,8 @@ module clip_mount(side, centered = false) {
 
 module clip_pair_mount() {
     for (side = [-1, 1])
-        clip_mount(side);
+        translate([side * CLIP_PAIR_SPACING / 2, 0, 0])
+            clip_mount(side, centered = true);
 }
 
 module mount() {
