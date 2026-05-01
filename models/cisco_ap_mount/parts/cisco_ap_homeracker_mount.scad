@@ -27,7 +27,7 @@ slider_recess_scale = 1.1; // [1:0.01:1.25]
 detent_enabled = true; // [false,true]
 detent_depth = 0.5; // [0.1:0.05:1.2]
 detent_length = 2.6; // [1:0.1:5]
-detent_offset_from_seat = 0.8; // [0:0.1:4]
+detent_clearance_from_seat = 0; // [0:0.1:4]
 
 /* [HomeRacker Sleeve] */
 sleeve_units = 9; // [3:1:12]
@@ -61,6 +61,7 @@ SLEEVE_INNER_SIDE = BASE_UNIT + sleeve_tolerance;
 SLEEVE_OUTER_WIDTH = BASE_UNIT + 2 * sleeve_wall + sleeve_tolerance;
 SLEEVE_OUTER_HEIGHT = BASE_UNIT + sleeve_wall + sleeve_tolerance;
 SLEEVE_LENGTH = sleeve_units * BASE_UNIT - sleeve_tolerance;
+SLEEVE_LOCKPIN_CENTER_Z = BASE_UNIT / 2 + sleeve_tolerance / 2;
 PLATE_BODY_THICKNESS = plate_thickness - plate_lip_thickness;
 
 module centered_box(size) {
@@ -101,11 +102,19 @@ module slider_hole_2d(recess = false) {
 
 module detent_bump_2d() {
     small_d = slider_small_diameter + slider_clearance;
-    detent_y = -slider_length / 2 + small_d / 2 + detent_offset_from_seat;
+    small_circle_center_y = -slider_length / 2 + small_d / 2;
+    detent_y = small_circle_center_y + detent_clearance_from_seat + detent_length / 2;
 
-    for (side = [-1, 1]) {
-        translate([side * small_d / 2, detent_y])
-            rounded_rect_2d([2 * detent_depth, detent_length], detent_depth);
+    difference() {
+        union() {
+            for (side = [-1, 1]) {
+                translate([side * small_d / 2, detent_y])
+                    rounded_rect_2d([2 * detent_depth, detent_length], detent_depth);
+            }
+        }
+
+        translate([0, small_circle_center_y])
+            circle(d = small_d);
     }
 }
 
@@ -180,7 +189,7 @@ module lockpin_hole() {
 module lockpin_holes() {
     if (lockpin_holes_enabled) {
         for (y = [-(sleeve_units - 1) / 2 : 1 : (sleeve_units - 1) / 2]) {
-            translate([0, y * BASE_UNIT, SLEEVE_OUTER_HEIGHT - BASE_UNIT / 2])
+            translate([0, y * BASE_UNIT, SLEEVE_LOCKPIN_CENTER_Z])
                 lockpin_hole();
         }
     }
