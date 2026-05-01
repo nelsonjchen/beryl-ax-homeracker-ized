@@ -1,0 +1,26 @@
+{
+  "openscad": {
+    "type": "nightly",
+    "version": "2026.04.25"
+  },
+  "dependencies": [
+    {
+      "name": "BOSL2",
+      "repository": "BelfrySCAD/BOSL2",
+      "version": "v2.0.735",
+      "source": "github"
+    },
+    {
+      "name": "homeracker",
+      "repository": "kellerlabs/homeracker",
+      "version": "homeracker-v3.3.1",
+      "source": "github"
+    }
+  ],
+  "flatten": [
+    {
+      "src": "models/cisco_ap_mount/parts",
+      "dest": "models/cisco_ap_mount/flattened"
+    }
+  ]
+}

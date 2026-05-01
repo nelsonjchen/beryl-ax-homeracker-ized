@@ -1,0 +1,15 @@
+Third-party attribution
+=======================
+
+This project is inspired by and uses dimensions from:
+
+- "Cisco AIR-AP-BRACKET-1" by nicba1010
+- Thingiverse: https://www.thingiverse.com/thing:5491712
+- Source file referenced locally as AIR-AP-BRACKET-1.scad
+- Repo copy: third_party/thingiverse-5491712/AIR-AP-BRACKET-1.scad
+- License: BSD license, as stated by the source model
+
+The original AIR-AP-BRACKET-1.scad dimensions used here include the four Cisco AP
+slider/keyhole cutouts and recessed two-layer slider-hole behavior. This project
+changes the surrounding bracket shape, ventilation pattern, and HomeRacker
+mounting interface.

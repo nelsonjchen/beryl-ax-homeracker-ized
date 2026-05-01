@@ -1,0 +1,27 @@
+version = 1
+revision = 2
+requires-python = ">=3.11"
+
+[[package]]
+name = "cisco-ap-homeracker-mount-openscad"
+version = "0.1.0"
+source = { virtual = "." }
+
+[package.dev-dependencies]
+dev = [
+    { name = "scadm" },
+]
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [{ name = "scadm", specifier = "==0.7.0" }]
+
+[[package]]
+name = "scadm"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/31/9c/da63136de865cbc1c37aa8bb626083ea1333d1003854a9060697914a82f6/scadm-0.7.0.tar.gz", hash = "sha256:02ad9ff0cd7dcf2ec4930e7446753e9fd1a3799e3ddd367b638d146412adb3c3", size = 34636, upload-time = "2026-04-18T13:54:16.241Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/33/b3/b2dffa4d9d7ded7939d3cc92349fdd63f1d54dfd1afbd1a101691f430e8d/scadm-0.7.0-py3-none-any.whl", hash = "sha256:82f767de6e272bbeb8de72ec3762b11faa3d9170af03bbaceeaf504cfd2f9130", size = 25059, upload-time = "2026-04-18T13:54:14.953Z" },
+]

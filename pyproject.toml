@@ -1,0 +1,12 @@
+[project]
+name = "cisco-ap-homeracker-mount-openscad"
+version = "0.1.0"
+description = "OpenSCAD model for mounting Cisco APs to a HomeRacker bar."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "scadm==0.7.0",
+]
