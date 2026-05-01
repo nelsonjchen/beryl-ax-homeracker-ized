@@ -18,7 +18,7 @@ skeleton_corner_radius = 6; // [2:0.1:12]
 /* [Cisco AP Slider Holes] */
 slider_holes_span = 108; // [80:0.1:130]
 slider_big_diameter = 10.5; // [8:0.1:14]
-slider_small_diameter = 7; // [5:0.1:10]
+slider_small_diameter = 10.5*(22/36); // [5:0.1:10]
 slider_length = 21.25; // [16:0.1:30]
 slider_clearance = 0.25; // [0:0.05:1]
 slider_recess_scale = 1.1; // [1:0.01:1.25]
