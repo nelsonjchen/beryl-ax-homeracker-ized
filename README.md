@@ -20,9 +20,13 @@ Useful targets:
 - `make sync`: install Python tooling into `.venv/`
 - `make install`: install OpenSCAD and SCAD dependencies through `uv run scadm install`
 - `make check`: check the scadm-managed OpenSCAD/dependency install
-- `make render`: validate the SCAD model by rendering to STL through scadm
-- `make png`: create a local preview PNG in `renders/`
-- `make build`: run the full bootstrap and render flow
+- `make render`: render the default `sleeve_rotation = 90` STL
+- `make render-rotation0`: render the earlier sleeve orientation STL
+- `make render-rotation90`: render the alternate sleeve orientation STL
+- `make render-all`: render both orientation STLs
+- `make render-clips`: render the two-piece clip pair plus individual left/right clip STLs
+- `make png`: create a local preview PNG for `sleeve_rotation = 90` in `renders/`
+- `make build`: run the full bootstrap flow and render both full-mount orientation STLs, clip STLs, and the preview PNG
 - `make clean`: remove generated render/export files
 
 Generated renders and export files are intentionally ignored by Git.
@@ -37,14 +41,24 @@ models/cisco_ap_mount/parts/cisco_ap_homeracker_mount.scad
 
 The model follows HomeRacker conventions where practical: 15 mm base units, 2 mm walls, 0.2 mm tolerance, 4 mm lock-pin holes, OpenSCAD Customizer sections, and BOSL2-style chamfered geometry.
 
-Current fit settings from coupon testing:
+Current fit settings from print testing:
 
-- Small slider diameter: `6.42` mm
-- Detent depth: `0.4` mm
+- Full-frame mount small slider diameter: `6.6` mm
+- Full-frame mount detent depth: `0.25` mm
+- Two-piece clip small slider diameter: `6.42` mm
+- Two-piece clip detent depth: `0.4` mm
 - Plate thickness: `3` mm total, with a `1` mm top lip/recess layer
 - Sleeve: `9` HomeRacker units overall, with `2` pin holes per end segment
+- Sleeve orientation: `sleeve_rotation = 90` mounts the HomeRacker sleeve on the alternate rail pair; set it to `0` for the earlier orientation
+- Part mode: `part_mode = 0` renders the full mount, `1` renders a two-piece pair, `2` renders the left clip, and `3` renders the right clip
 
-The production model engraves `CISCO AP HOMERACKER`, `S6.42`, and `D0.4` into the top surface so printed parts carry their fit settings.
+The production model engraves `CISCO AP HOMERACKER`, `S6.6`, and `D0.25` into the top surface so printed parts carry their fit settings.
+
+## Two-Piece Clips
+
+The two-piece clip mode splits the mount into left/right clips, each carrying two Cisco AP keyholes, one HomeRacker sleeve segment, and two lock-pin holes. The pieces are intentionally labeled with side, the `CISCO AP HOMERACKER` mount name split across the rails, and their tighter standalone `S6.42 D0.4` fit settings so each loose part remains identifiable during installation.
+
+The clips do not mechanically prevent being pinned in the wrong HomeRacker holes; if spacing is wrong, move the clip to a different hole pair and retry the AP slide fit.
 
 ## Fit Coupons
 
