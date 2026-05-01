@@ -31,6 +31,8 @@ detent_clearance_from_seat = 0; // [0:0.1:4]
 
 /* [HomeRacker Sleeve] */
 sleeve_units = 9; // [3:1:12]
+sleeve_holes_per_end = 2; // [1:1:4]
+sleeve_roof_overhang = 4; // [0:0.1:10]
 sleeve_wall = 2; // [1.2:0.1:4]
 sleeve_tolerance = 0.2; // [0:0.05:0.6]
 lockpin_holes_enabled = true; // [false,true]
@@ -61,7 +63,9 @@ SLEEVE_INNER_SIDE = BASE_UNIT + sleeve_tolerance;
 SLEEVE_OUTER_WIDTH = BASE_UNIT + 2 * sleeve_wall + sleeve_tolerance;
 SLEEVE_SIDE_HEIGHT = SLEEVE_INNER_SIDE;
 SLEEVE_ATTACH_OVERLAP = 0.05;
-SLEEVE_LENGTH = sleeve_units * BASE_UNIT - sleeve_tolerance;
+SLEEVE_SEGMENT_LENGTH = sleeve_holes_per_end * BASE_UNIT - sleeve_tolerance;
+SLEEVE_ROOF_SEGMENT_LENGTH = SLEEVE_SEGMENT_LENGTH + 2 * sleeve_roof_overhang;
+SLEEVE_SEGMENT_OFFSET = (sleeve_units - sleeve_holes_per_end) * BASE_UNIT / 2;
 SLEEVE_LOCKPIN_CENTER_Z = BASE_UNIT / 2 + sleeve_tolerance / 2;
 PLATE_BODY_THICKNESS = plate_thickness - plate_lip_thickness;
 
@@ -146,9 +150,16 @@ module rib_between_2d(start, end, width) {
     }
 }
 
+module sleeve_segments_2d(width) {
+    for (y = [-1, 1]) {
+        translate([0, y * SLEEVE_SEGMENT_OFFSET])
+            rounded_rect_2d([width, SLEEVE_ROOF_SEGMENT_LENGTH], skeleton_corner_radius);
+    }
+}
+
 module skeleton_base_2d() {
     union() {
-        rounded_rect_2d([spine_width, plate_size], skeleton_corner_radius);
+        sleeve_segments_2d(spine_width);
 
         for (y = [-1, 1]) {
             translate([0, y * slider_holes_span / 2])
@@ -189,9 +200,13 @@ module lockpin_hole() {
 
 module lockpin_holes() {
     if (lockpin_holes_enabled) {
-        for (y = [-(sleeve_units - 1) / 2 : 1 : (sleeve_units - 1) / 2]) {
-            translate([0, y * BASE_UNIT, SLEEVE_LOCKPIN_CENTER_Z])
-                lockpin_hole();
+        for (segment_side = [-1, 1]) {
+            for (hole = [0 : 1 : sleeve_holes_per_end - 1]) {
+                local_y = (hole - (sleeve_holes_per_end - 1) / 2) * BASE_UNIT;
+
+                translate([0, segment_side * SLEEVE_SEGMENT_OFFSET + local_y, SLEEVE_LOCKPIN_CENTER_Z])
+                    lockpin_hole();
+            }
         }
     }
 }
@@ -201,13 +216,15 @@ module homeracker_sleeve() {
     difference() {
         // The AP bracket's center spine acts as the sleeve roof.
         union() {
-            for (side = [-1, 1]) {
-                translate([
-                    side * (SLEEVE_INNER_SIDE / 2 + sleeve_wall / 2),
-                    0,
-                    (SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP) / 2
-                ])
-                    centered_box([sleeve_wall, SLEEVE_LENGTH, SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP]);
+            for (segment_side = [-1, 1]) {
+                for (wall_side = [-1, 1]) {
+                    translate([
+                        wall_side * (SLEEVE_INNER_SIDE / 2 + sleeve_wall / 2),
+                        segment_side * SLEEVE_SEGMENT_OFFSET,
+                        (SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP) / 2
+                    ])
+                        centered_box([sleeve_wall, SLEEVE_SEGMENT_LENGTH, SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP]);
+                }
             }
         }
 
@@ -222,6 +239,9 @@ module mount() {
     assert(spine_width > SLEEVE_OUTER_WIDTH, "Spine width must be wider than the HomeRacker sleeve.");
     assert(detent_depth * 2 < slider_small_diameter + slider_clearance, "Detent bumps close the slider slot completely.");
     assert(sleeve_units > 0, "Sleeve units must be positive.");
+    assert(sleeve_holes_per_end > 0, "At least one sleeve hole per end is required.");
+    assert(sleeve_holes_per_end * 2 <= sleeve_units, "Sleeve end segments overlap; reduce holes per end or increase sleeve units.");
+    assert(SLEEVE_ROOF_SEGMENT_LENGTH < sleeve_units * BASE_UNIT, "Sleeve roof overhang is too large.");
 
     union() {
         homeracker_sleeve();
