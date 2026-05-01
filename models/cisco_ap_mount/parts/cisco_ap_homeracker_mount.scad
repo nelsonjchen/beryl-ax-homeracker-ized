@@ -29,6 +29,12 @@ detent_depth = 0.4; // [0.1:0.05:1.2]
 detent_length = 2.6; // [1:0.1:5]
 detent_clearance_from_seat = 0; // [0:0.1:4]
 
+/* [Production Label] */
+label_enabled = true; // [false,true]
+label_size = 4; // [2:0.1:6]
+identity_label_size = 3.6; // [2:0.1:6]
+label_depth = 0.35; // [0.1:0.05:0.8]
+
 /* [HomeRacker Sleeve] */
 sleeve_units = 9; // [3:1:12]
 sleeve_holes_per_end = 2; // [1:1:4]
@@ -184,14 +190,34 @@ module bracket_layer_2d(recess = false) {
     }
 }
 
+module label_text(text_value, position, spin = 0, size = label_size) {
+    translate(position)
+        rotate(spin)
+        text(text_value, size = size, halign = "center", valign = "center", font = "Liberation Sans:style=Bold");
+}
+
+module production_labels_2d() {
+    if (label_enabled) {
+        label_text("CISCO AP HOMERACKER", [slider_holes_span / 2, 0], spin = 90, size = identity_label_size);
+        label_text(str("S", slider_small_diameter), [0, -SLEEVE_SEGMENT_OFFSET], spin = 90);
+        label_text(str("D", detent_depth), [0, SLEEVE_SEGMENT_OFFSET], spin = 90);
+    }
+}
+
 module ap_bracket() {
     color(debug_colors ? HR_BLUE : BRACKET_WHITE)
-    union() {
-        linear_extrude(PLATE_BODY_THICKNESS)
-            bracket_layer_2d(recess = true);
-        translate([0, 0, PLATE_BODY_THICKNESS])
-            linear_extrude(plate_lip_thickness)
-            bracket_layer_2d(recess = false);
+    difference() {
+        union() {
+            linear_extrude(PLATE_BODY_THICKNESS)
+                bracket_layer_2d(recess = true);
+            translate([0, 0, PLATE_BODY_THICKNESS])
+                linear_extrude(plate_lip_thickness)
+                bracket_layer_2d(recess = false);
+        }
+
+        translate([0, 0, plate_thickness - label_depth + EPSILON])
+            linear_extrude(label_depth + EPSILON)
+            production_labels_2d();
     }
 }
 
@@ -239,6 +265,7 @@ module mount() {
     assert(corner_pad_diameter > slider_big_diameter * slider_recess_scale + 8, "Corner pads are too small for recessed slider holes.");
     assert(spine_width > SLEEVE_OUTER_WIDTH, "Spine width must be wider than the HomeRacker sleeve.");
     assert(detent_depth * 2 < slider_small_diameter + slider_clearance, "Detent bumps close the slider slot completely.");
+    assert(label_depth > 0 && label_depth < plate_lip_thickness, "Label depth must be less than the plate lip thickness.");
     assert(sleeve_units > 0, "Sleeve units must be positive.");
     assert(sleeve_holes_per_end > 0, "At least one sleeve hole per end is required.");
     assert(sleeve_holes_per_end * 2 <= sleeve_units, "Sleeve end segments overlap; reduce holes per end or increase sleeve units.");

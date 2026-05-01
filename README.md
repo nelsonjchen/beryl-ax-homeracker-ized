@@ -2,7 +2,7 @@
 
 An OpenSCAD model for mounting Cisco wireless access points to a HomeRacker bar.
 
-The first printable part is a low-profile plate with four Cisco AIR-AP-BRACKET-1-style slider/keyhole holes, ventilation holes for AP cooling, and a U-shaped sleeve that slides over a single 15 mm HomeRacker support/bar. Lock-pin holes in the sleeve let the part be pinned into the rack.
+The current printable part is a low-profile skeleton plate with four Cisco AIR-AP-BRACKET-1-style recessed slider/keyhole holes and a segmented HomeRacker sleeve. The center of the mount is left open for airflow and material savings; only the two sleeve segments at the ends remain, each with two lock-pin holes for mounting to a single 15 mm HomeRacker support/bar.
 
 ## Tooling
 
@@ -36,6 +36,25 @@ models/cisco_ap_mount/parts/cisco_ap_homeracker_mount.scad
 ```
 
 The model follows HomeRacker conventions where practical: 15 mm base units, 2 mm walls, 0.2 mm tolerance, 4 mm lock-pin holes, OpenSCAD Customizer sections, and BOSL2-style chamfered geometry.
+
+Current fit settings from coupon testing:
+
+- Small slider diameter: `6.42` mm
+- Detent depth: `0.4` mm
+- Plate thickness: `3` mm total, with a `1` mm top lip/recess layer
+- Sleeve: `9` HomeRacker units overall, with `2` pin holes per end segment
+
+The production model engraves `CISCO AP HOMERACKER`, `S6.42`, and `D0.4` into the top surface so printed parts carry their fit settings.
+
+## Fit Coupons
+
+Test coupon source:
+
+```text
+models/cisco_ap_mount/test/keyhole_fit_coupon.scad
+```
+
+The coupon matrix varies the small slider diameter and detent depth so the AP fit can be tested quickly before printing the full mount. The coupon uses the same `3` mm total thickness and `1` mm top lip/recess layer as the production bracket.
 
 ## Attribution And License
 
