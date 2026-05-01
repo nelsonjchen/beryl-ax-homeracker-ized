@@ -23,6 +23,12 @@ slider_length = 21.25; // [16:0.1:30]
 slider_clearance = 0.25; // [0:0.05:1]
 slider_recess_scale = 1.1; // [1:0.01:1.25]
 
+/* [AP Retention Detent] */
+detent_enabled = true; // [false,true]
+detent_depth = 0.5; // [0.1:0.05:1.2]
+detent_length = 2.6; // [1:0.1:5]
+detent_offset_from_seat = 0.8; // [0:0.1:4]
+
 /* [HomeRacker Sleeve] */
 sleeve_units = 9; // [3:1:12]
 sleeve_wall = 2; // [1.2:0.1:4]
@@ -93,10 +99,31 @@ module slider_hole_2d(recess = false) {
     }
 }
 
+module detent_bump_2d() {
+    small_d = slider_small_diameter + slider_clearance;
+    detent_y = -slider_length / 2 + small_d + detent_offset_from_seat;
+
+    for (side = [-1, 1]) {
+        translate([side * small_d / 2, detent_y])
+            rounded_rect_2d([2 * detent_depth, detent_length], detent_depth);
+    }
+}
+
+module slider_cutout_2d(recess = false) {
+    if (detent_enabled && !recess) {
+        difference() {
+            slider_hole_2d(recess);
+            detent_bump_2d();
+        }
+    } else {
+        slider_hole_2d(recess);
+    }
+}
+
 module slider_holes_2d(recess = false) {
     for (x = [-1, 1], y = [-1, 1]) {
         translate([x * slider_holes_span / 2, y * slider_holes_span / 2])
-            slider_hole_2d(recess);
+            slider_cutout_2d(recess);
     }
 }
 
@@ -177,6 +204,7 @@ module mount() {
     assert(plate_lip_thickness > 0 && plate_lip_thickness < plate_thickness, "Plate lip thickness must be less than total plate thickness.");
     assert(corner_pad_diameter > slider_big_diameter * slider_recess_scale + 8, "Corner pads are too small for recessed slider holes.");
     assert(spine_width > SLEEVE_OUTER_WIDTH, "Spine width must be wider than the HomeRacker sleeve.");
+    assert(detent_depth * 2 < slider_small_diameter + slider_clearance, "Detent bumps close the slider slot completely.");
     assert(sleeve_units > 0, "Sleeve units must be positive.");
 
     union() {
