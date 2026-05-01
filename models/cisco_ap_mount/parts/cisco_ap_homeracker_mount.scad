@@ -101,7 +101,7 @@ module slider_hole_2d(recess = false) {
 
 module detent_bump_2d() {
     small_d = slider_small_diameter + slider_clearance;
-    detent_y = -slider_length / 2 + small_d + detent_offset_from_seat;
+    detent_y = -slider_length / 2 + small_d / 2 + detent_offset_from_seat;
 
     for (side = [-1, 1]) {
         translate([side * small_d / 2, detent_y])

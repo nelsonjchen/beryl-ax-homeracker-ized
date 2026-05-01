@@ -75,7 +75,7 @@ module slider_hole_2d(small_diameter, recess = false) {
 
 module detent_bump_2d(small_diameter, detent_depth) {
     small_d = small_diameter + slider_clearance;
-    detent_y = -slider_length / 2 + small_d + detent_offset_from_seat;
+    detent_y = -slider_length / 2 + small_d / 2 + detent_offset_from_seat;
 
     if (detent_enabled && detent_depth > 0) {
         for (side = [-1, 1]) {
