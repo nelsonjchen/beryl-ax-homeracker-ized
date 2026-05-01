@@ -33,6 +33,7 @@ detent_clearance_from_seat = 0; // [0:0.1:4]
 label_enabled = true; // [false,true]
 label_size = 4; // [2:0.1:6]
 identity_label_size = 3.6; // [2:0.1:6]
+repo_label_size = 2.4; // [1.5:0.1:4]
 label_depth = 0.35; // [0.1:0.05:0.8]
 
 /* [HomeRacker Sleeve] */
@@ -199,6 +200,8 @@ module label_text(text_value, position, spin = 0, size = label_size) {
 module production_labels_2d() {
     if (label_enabled) {
         label_text("CISCO AP HOMERACKER", [slider_holes_span / 2, 0], spin = 90, size = identity_label_size);
+        label_text("GitHub: nelsonjchen/", [-slider_holes_span / 2 + 3, 0], spin = -90, size = repo_label_size);
+        label_text("cisco-ap-homeracker-mount-openscad", [-slider_holes_span / 2 - 3, 0], spin = -90, size = repo_label_size);
         label_text(str("S", slider_small_diameter), [0, -SLEEVE_SEGMENT_OFFSET], spin = 90);
         label_text(str("D", detent_depth), [0, SLEEVE_SEGMENT_OFFSET], spin = 90);
     }
