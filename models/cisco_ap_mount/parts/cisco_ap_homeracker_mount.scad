@@ -50,6 +50,10 @@ sleeve_rotation = 90; // [0,90]
 sleeve_wall = 2; // [1.2:0.1:4]
 sleeve_tolerance = 0.2; // [0:0.05:0.6]
 lockpin_holes_enabled = true; // [false,true]
+sleeve_gussets_enabled = true; // [false,true]
+sleeve_gusset_depth = 2.2; // [0:0.1:3]
+sleeve_gusset_drop = 9; // [2:0.1:12]
+sleeve_gusset_span = 5; // [2:0.1:10]
 
 /* [Debug] */
 debug_colors = false; // [false,true]
@@ -85,6 +89,8 @@ SLEEVE_LOCKPIN_CENTER_Z = BASE_UNIT / 2 + sleeve_tolerance / 2;
 PLATE_BODY_THICKNESS = plate_thickness - plate_lip_thickness;
 CLIP_ARM_LABEL_OFFSET = (spine_width / 2 + slider_holes_span / 2 - corner_pad_diameter / 2) / 2;
 CLIP_PAIR_SPACING = SLEEVE_ROOF_SEGMENT_LENGTH + clip_pair_gap;
+SLEEVE_GUSSET_HEIGHT = SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP;
+SLEEVE_GUSSET_LOW_Z = max(0, SLEEVE_GUSSET_HEIGHT - sleeve_gusset_drop);
 ACTIVE_SLIDER_SMALL_DIAMETER = part_mode == 0 ? slider_small_diameter : clip_slider_small_diameter;
 ACTIVE_DETENT_DEPTH = part_mode == 0 ? detent_depth : clip_detent_depth;
 
@@ -354,6 +360,70 @@ module lockpin_holes() {
     }
 }
 
+module sleeve_gusset_along_x(center_x, wall_side) {
+    x0 = center_x - sleeve_gusset_span / 2;
+    x1 = center_x + sleeve_gusset_span / 2;
+    y0 = wall_side * SLEEVE_OUTER_WIDTH / 2;
+    y1 = y0 + wall_side * sleeve_gusset_depth;
+
+    polyhedron(
+        points = [
+            [x0, y0, SLEEVE_GUSSET_HEIGHT],
+            [x1, y0, SLEEVE_GUSSET_HEIGHT],
+            [x0, y0, SLEEVE_GUSSET_LOW_Z],
+            [x1, y0, SLEEVE_GUSSET_LOW_Z],
+            [x0, y1, SLEEVE_GUSSET_HEIGHT],
+            [x1, y1, SLEEVE_GUSSET_HEIGHT]
+        ],
+        faces = [
+            [0, 1, 3, 2],
+            [0, 4, 5, 1],
+            [2, 3, 5, 4],
+            [0, 2, 4],
+            [1, 5, 3]
+        ]
+    );
+}
+
+module sleeve_gusset_along_y(center_y, wall_side) {
+    x0 = wall_side * SLEEVE_OUTER_WIDTH / 2;
+    x1 = x0 + wall_side * sleeve_gusset_depth;
+    y0 = center_y - sleeve_gusset_span / 2;
+    y1 = center_y + sleeve_gusset_span / 2;
+
+    polyhedron(
+        points = [
+            [x0, y0, SLEEVE_GUSSET_HEIGHT],
+            [x0, y1, SLEEVE_GUSSET_HEIGHT],
+            [x0, y0, SLEEVE_GUSSET_LOW_Z],
+            [x0, y1, SLEEVE_GUSSET_LOW_Z],
+            [x1, y0, SLEEVE_GUSSET_HEIGHT],
+            [x1, y1, SLEEVE_GUSSET_HEIGHT]
+        ],
+        faces = [
+            [0, 2, 3, 1],
+            [0, 1, 5, 4],
+            [2, 4, 5, 3],
+            [0, 4, 2],
+            [1, 3, 5]
+        ]
+    );
+}
+
+module sleeve_segment_gussets_y(segment_center_y) {
+    if (sleeve_gussets_enabled) {
+        for (wall_side = [-1, 1])
+            sleeve_gusset_along_y(segment_center_y, wall_side);
+    }
+}
+
+module sleeve_segment_gussets_x(segment_center_x) {
+    if (sleeve_gussets_enabled) {
+        for (wall_side = [-1, 1])
+            sleeve_gusset_along_x(segment_center_x, wall_side);
+    }
+}
+
 module homeracker_sleeve() {
     color(debug_colors ? HR_YELLOW : HR_YELLOW)
     oriented_sleeve_3d()
@@ -369,6 +439,8 @@ module homeracker_sleeve() {
                         ])
                             centered_box([sleeve_wall, SLEEVE_SEGMENT_LENGTH, SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP]);
                     }
+
+                    sleeve_segment_gussets_y(segment_side * SLEEVE_SEGMENT_OFFSET);
                 }
             }
 
@@ -399,6 +471,8 @@ module homeracker_clip_sleeve(side) {
                 ])
                     centered_box([SLEEVE_SEGMENT_LENGTH, sleeve_wall, SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP]);
             }
+
+            sleeve_segment_gussets_x(side * SLEEVE_SEGMENT_OFFSET);
         }
 
         clip_lockpin_holes(side);
@@ -433,6 +507,8 @@ module mount() {
     assert(SLEEVE_ROOF_SEGMENT_LENGTH < sleeve_units * BASE_UNIT, "Sleeve roof overhang is too large.");
     assert(sleeve_rotation == 0 || sleeve_rotation == 90, "Sleeve rotation must be 0 or 90 degrees.");
     assert(part_mode >= 0 && part_mode <= 3, "Part mode must be 0, 1, 2, or 3.");
+    assert(!sleeve_gussets_enabled || sleeve_gusset_depth <= (spine_width - SLEEVE_OUTER_WIDTH) / 2, "Sleeve gussets protrude beyond the sleeve roof; reduce sleeve_gusset_depth or increase spine_width.");
+    assert(!sleeve_gussets_enabled || sleeve_gusset_span < BASE_UNIT - LOCKPIN_SIDE, "Sleeve gusset span is too wide to stay clear of lock-pin holes.");
 
     if (part_mode == 0) {
         union() {
