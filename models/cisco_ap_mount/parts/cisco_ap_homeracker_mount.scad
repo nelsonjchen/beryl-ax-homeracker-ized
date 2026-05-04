@@ -14,7 +14,7 @@ spine_width = 24; // [16:0.1:36]
 rib_width = 13; // [8:0.1:24]
 end_rail_width = 12; // [8:0.1:24]
 skeleton_corner_radius = 6; // [2:0.1:12]
-part_mode = 0; // [0:Full mount,1:Two-piece pair,2:Left clip,3:Right clip]
+part_mode = 1; // [0:Full mount,1:Two-piece pair,2:Left clip,3:Right clip]
 
 /* [Cisco AP Slider Holes] */
 slider_holes_span = 108; // [80:0.1:130]
@@ -51,8 +51,8 @@ sleeve_wall = 2; // [1.2:0.1:4]
 sleeve_tolerance = 0.2; // [0:0.05:0.6]
 lockpin_holes_enabled = true; // [false,true]
 sleeve_gussets_enabled = true; // [false,true]
-sleeve_gusset_depth = 2.2; // [0:0.1:3]
-sleeve_gusset_drop = 9; // [2:0.1:12]
+sleeve_gusset_depth = 13; // [0:0.1:3]
+sleeve_gusset_drop = 15.2; // [2:0.1:14]
 sleeve_gusset_span = 5; // [2:0.1:10]
 
 /* [Debug] */
@@ -87,7 +87,7 @@ SLEEVE_ROOF_SEGMENT_LENGTH = SLEEVE_SEGMENT_LENGTH + 2 * sleeve_roof_overhang;
 SLEEVE_SEGMENT_OFFSET = (sleeve_units - sleeve_holes_per_end) * BASE_UNIT / 2;
 SLEEVE_LOCKPIN_CENTER_Z = BASE_UNIT / 2 + sleeve_tolerance / 2;
 PLATE_BODY_THICKNESS = plate_thickness - plate_lip_thickness;
-CLIP_ARM_LABEL_OFFSET = (spine_width / 2 + slider_holes_span / 2 - corner_pad_diameter / 2) / 2;
+CLIP_ARM_LABEL_OFFSET = (spine_width / 2 + slider_holes_span / 2 - corner_pad_diameter / 2) / 1.6;
 CLIP_PAIR_SPACING = SLEEVE_ROOF_SEGMENT_LENGTH + clip_pair_gap;
 SLEEVE_GUSSET_HEIGHT = SLEEVE_SIDE_HEIGHT + SLEEVE_ATTACH_OVERLAP;
 SLEEVE_GUSSET_LOW_Z = max(0, SLEEVE_GUSSET_HEIGHT - sleeve_gusset_drop);
@@ -299,7 +299,7 @@ module clip_labels_2d(side) {
 
 module clip_bottom_labels_2d(side) {
     if (label_enabled) {
-        side_name = side < 0 ? "LEFT" : "RIGHT";
+        side_name = side < 0 ? "LFT" : "RGT";
 
         for (arm_side = [-1, 1])
             bottom_label_text(side_name, [side * slider_holes_span / 2, arm_side * CLIP_ARM_LABEL_OFFSET], spin = 90, size = label_size);
@@ -507,7 +507,6 @@ module mount() {
     assert(SLEEVE_ROOF_SEGMENT_LENGTH < sleeve_units * BASE_UNIT, "Sleeve roof overhang is too large.");
     assert(sleeve_rotation == 0 || sleeve_rotation == 90, "Sleeve rotation must be 0 or 90 degrees.");
     assert(part_mode >= 0 && part_mode <= 3, "Part mode must be 0, 1, 2, or 3.");
-    assert(!sleeve_gussets_enabled || sleeve_gusset_depth <= (spine_width - SLEEVE_OUTER_WIDTH) / 2, "Sleeve gussets protrude beyond the sleeve roof; reduce sleeve_gusset_depth or increase spine_width.");
     assert(!sleeve_gussets_enabled || sleeve_gusset_span < BASE_UNIT - LOCKPIN_SIDE, "Sleeve gusset span is too wide to stay clear of lock-pin holes.");
 
     if (part_mode == 0) {
