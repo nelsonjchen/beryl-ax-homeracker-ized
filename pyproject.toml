@@ -1,7 +1,7 @@
 [project]
-name = "ruckus-ap-homeracker-mount-openscad"
+name = "beryl-ax-homeracker-sleeve-openscad"
 version = "0.1.0"
-description = "OpenSCAD model for mounting Ruckus APs to a HomeRacker bar."
+description = "OpenSCAD model for adapting a GL.iNet Beryl AX holster to a HomeRacker bar."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []

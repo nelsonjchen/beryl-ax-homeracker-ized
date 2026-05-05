@@ -9,5 +9,5 @@ plate behavior.
 - Source: https://www.thingiverse.com/thing:5491712
 - License: BSD license, as stated by the source model
 
-The active Ruckus sleeve scaffold does not use this geometry, but the source
-copy is retained for attribution history.
+The active Beryl AX HomeRacker sleeve source does not use this geometry, but the
+source copy is retained for attribution history.

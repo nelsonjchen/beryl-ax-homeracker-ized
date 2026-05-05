@@ -19,8 +19,8 @@
   ],
   "flatten": [
     {
-      "src": "models/ruckus_ap_mount/parts",
-      "dest": "models/ruckus_ap_mount/flattened"
+      "src": "models/beryl_ax_homeracker_sleeve/parts",
+      "dest": "models/beryl_ax_homeracker_sleeve/flattened"
     }
   ]
 }

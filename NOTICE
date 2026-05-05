@@ -12,5 +12,6 @@ That original project was inspired by and used dimensions from:
 
 The original AIR-AP-BRACKET-1.scad dimensions included the four Cisco AP
 slider/keyhole cutouts and recessed two-layer slider-hole behavior. The current
-Ruckus rebuild does not use that geometry in its active OpenSCAD model, but this
-notice and the source copy are retained to preserve the upstream attribution.
+Beryl AX HomeRacker sleeve source does not use that geometry in its active
+OpenSCAD model, but this notice and the source copy are retained to preserve the
+upstream attribution.

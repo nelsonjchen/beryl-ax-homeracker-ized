@@ -1,11 +1,11 @@
-# Ruckus AP HomeRacker Mount
+# Beryl AX HomeRacker Sleeve
 
-An OpenSCAD model for mounting Ruckus wireless access points to a HomeRacker bar.
+An OpenSCAD model for adapting a GL.iNet Beryl AX holster to a HomeRacker bar.
 
-This repo is being rebuilt from the earlier Cisco AP mount. The current printable
-part is only the segmented HomeRacker sleeve: two sleeve sections sized around a
-15 mm HomeRacker support/bar, each with two 4 mm lock-pin holes. The Ruckus
-AP-facing geometry will be derived later from the STL reference in `reference/`.
+This repo is being rebuilt around the Beryl AX holster STL in `reference/`.
+The current OpenSCAD source is intentionally blank except for importing that STL,
+so the model can be carved and wrapped with HomeRacker-compatible geometry in
+small passes.
 
 ## Tooling
 
@@ -23,14 +23,9 @@ Useful targets:
 - `make sync`: install Python tooling into `.venv/`
 - `make install`: install OpenSCAD and SCAD dependencies through `uv run scadm install`
 - `make check`: check the scadm-managed OpenSCAD/dependency install
-- `make render`: render the default `sleeve_rotation = 90` STL
-- `make render-rotation0`: render the sleeve in the original rail orientation
-- `make render-rotation90`: render the sleeve in the alternate rail orientation
-- `make render-prototype`: render the current Ruckus-prong prototype mount
-- `make render-all`: render both orientation STLs
-- `make png`: create a local preview PNG for `sleeve_rotation = 90` in `renders/`
-- `make png-views`: render reference, prototype, and overlay inspection PNGs
-- `make build`: run the full bootstrap flow and render sleeve/prototype STLs plus inspection PNGs
+- `make render`: render the imported Beryl AX holster STL through OpenSCAD
+- `make png`: create a local preview PNG in `renders/`
+- `make build`: run the full bootstrap flow and render the STL plus preview PNG
 - `make clean`: remove generated render/export files
 
 Generated renders and export files are intentionally ignored by Git.
@@ -40,27 +35,20 @@ Generated renders and export files are intentionally ignored by Git.
 Main source:
 
 ```text
-models/ruckus_ap_mount/parts/ruckus_ap_homeracker_sleeve.scad
+models/beryl_ax_homeracker_sleeve/parts/beryl_ax_homeracker_sleeve.scad
 ```
 
-The model follows HomeRacker conventions where practical: 15 mm base units,
+The model will follow HomeRacker conventions where practical: 15 mm base units,
 2 mm walls, 0.2 mm tolerance, 4 mm lock-pin holes, and OpenSCAD Customizer
-sections.
+sections. For now, the source exposes only STL import transform controls:
+`reference_alpha`, `reference_scale`, `reference_translate`, and
+`reference_rotate`.
 
-Current sleeve settings:
+Current source scaffold:
 
-- Sleeve: one centered HomeRacker island by default, with `2` lock-pin positions
-- Sleeve roof: flush with the sleeve outer wall width and island length to reduce support
-- Sleeve orientation: `sleeve_rotation = 90` mounts the sleeve on the alternate rail pair; set it to `0` for the original orientation
-- Ruckus interface orientation: `ruckus_interface_rotation = 90` turns the prong pair perpendicular to the sleeve island
-- Ruckus strip: a straight, flat `4.4` mm thick bar under the prongs
-- Ruckus strip vertical offset: `ruckus_mount_z = -3` sinks the strip through the sleeve roof thickness
-- Ruckus gussets: full-width triangular drop webs enabled by default, with the sloped face held to a `30` degree printable angle and lower edge reaching global `z = 0`
-- STL reference overlay: use `part_mode = 2` for sleeve plus reference, or `part_mode = 4` for prototype plus reference
-- Ruckus prong centers, measured from the STL: `84.7` mm apart
-- Ruckus prong shaft: `4` mm diameter by `2.1` mm exposed height after folding the raised bridge into the strip
-- Ruckus prong cap, measured from the STL: `6.7` mm diameter by `3.5` mm tall
-- Ruckus reference mesh bounding box: about `93 x 24 x 10` mm
+- Imports `reference/GL-INET-BERYL-AX-HOLSTER.stl`
+- Provides transform controls for aligning the imported mesh
+- Leaves all subtractive cuts and HomeRacker sleeve geometry for follow-up edits
 
 ## Attribution And License
 
