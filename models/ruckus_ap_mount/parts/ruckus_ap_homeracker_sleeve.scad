@@ -10,8 +10,6 @@ sleeve_holes_per_island = 4; // [1:1:8]
 sleeve_rotation = 90; // [0,90]
 sleeve_wall = 2; // [1.2:0.1:4]
 sleeve_roof_thickness = 3; // [1.6:0.1:6]
-sleeve_roof_width = 24; // [18:0.1:40]
-sleeve_roof_overhang = 4; // [0:0.1:10]
 sleeve_tolerance = 0.2; // [0:0.05:0.6]
 lockpin_holes_enabled = true; // [false,true]
 
@@ -61,7 +59,8 @@ LOCKPIN_SIDE = LOCKPIN_HOLE_SIDE_LENGTH;
 SLEEVE_INNER_SIDE = BASE_UNIT + sleeve_tolerance;
 SLEEVE_OUTER_WIDTH = BASE_UNIT + 2 * sleeve_wall + sleeve_tolerance;
 SLEEVE_SEGMENT_LENGTH = sleeve_holes_per_island * BASE_UNIT - sleeve_tolerance;
-SLEEVE_ROOF_SEGMENT_LENGTH = SLEEVE_SEGMENT_LENGTH + 2 * sleeve_roof_overhang;
+SLEEVE_ROOF_SEGMENT_LENGTH = SLEEVE_SEGMENT_LENGTH;
+SLEEVE_ROOF_WIDTH = SLEEVE_OUTER_WIDTH;
 SLEEVE_SEGMENT_OFFSET = sleeve_island_count == 1 ? 0 : (sleeve_units - sleeve_holes_per_island) * BASE_UNIT / 2;
 SLEEVE_LOCKPIN_CENTER_Z = BASE_UNIT / 2 + sleeve_tolerance / 2;
 SLEEVE_ISLAND_SIDES = sleeve_island_count == 1 ? [0] : [-1, 1];
@@ -105,7 +104,7 @@ module sleeve_segment(segment_side) {
         }
 
         translate([0, segment_y, SLEEVE_INNER_SIDE + sleeve_roof_thickness / 2])
-            centered_box([sleeve_roof_width, SLEEVE_ROOF_SEGMENT_LENGTH, sleeve_roof_thickness]);
+            centered_box([SLEEVE_ROOF_WIDTH, SLEEVE_ROOF_SEGMENT_LENGTH, sleeve_roof_thickness]);
     }
 }
 
@@ -213,7 +212,6 @@ module model() {
     assert(sleeve_island_count == 1 || sleeve_island_count == 2, "Sleeve island count must be 1 or 2.");
     assert(sleeve_holes_per_island > 0, "At least one sleeve hole per island is required.");
     assert(sleeve_island_count == 1 || sleeve_holes_per_island * 2 <= sleeve_units, "Sleeve end segments overlap; reduce holes per island or increase sleeve units.");
-    assert(sleeve_roof_width >= SLEEVE_OUTER_WIDTH, "Sleeve roof width must cover the side walls.");
     assert(sleeve_rotation == 0 || sleeve_rotation == 90, "Sleeve rotation must be 0 or 90 degrees.");
     assert(part_mode >= 0 && part_mode <= 4, "Part mode must be 0, 1, 2, 3, or 4.");
     assert(ruckus_interface_rotation == 0 || ruckus_interface_rotation == 90, "Ruckus interface rotation must be 0 or 90 degrees.");

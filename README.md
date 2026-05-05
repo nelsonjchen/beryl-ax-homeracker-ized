@@ -50,6 +50,7 @@ sections.
 Current sleeve settings:
 
 - Sleeve: one centered HomeRacker island by default, with `4` lock-pin positions
+- Sleeve roof: flush with the sleeve outer wall width and island length to reduce support
 - Sleeve orientation: `sleeve_rotation = 90` mounts the sleeve on the alternate rail pair; set it to `0` for the original orientation
 - Ruckus interface orientation: `ruckus_interface_rotation = 90` turns the prong pair perpendicular to the sleeve island
 - Ruckus strip: a straight, flat `4.4` mm thick bar under the prongs
