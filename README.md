@@ -52,9 +52,11 @@ Current sleeve settings:
 - Sleeve: one centered HomeRacker island by default, with `4` lock-pin positions
 - Sleeve orientation: `sleeve_rotation = 90` mounts the sleeve on the alternate rail pair; set it to `0` for the original orientation
 - Ruckus interface orientation: `ruckus_interface_rotation = 90` turns the prong pair perpendicular to the sleeve island
+- Ruckus strip: a straight, flat `4.4` mm thick bar under the prongs
+- Ruckus strip vertical offset: `ruckus_mount_z = -3` sinks the strip through the sleeve roof thickness
 - STL reference overlay: use `part_mode = 2` for sleeve plus reference, or `part_mode = 4` for prototype plus reference
 - Ruckus prong centers, measured from the STL: `84.7` mm apart
-- Ruckus prong shaft, measured from the STL: `4` mm diameter by `4.5` mm tall
+- Ruckus prong shaft: `4` mm diameter by `2.1` mm exposed height after folding the raised bridge into the strip
 - Ruckus prong cap, measured from the STL: `6.7` mm diameter by `3.5` mm tall
 - Ruckus reference mesh bounding box: about `93 x 24 x 10` mm
 

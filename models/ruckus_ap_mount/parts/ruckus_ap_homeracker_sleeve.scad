@@ -24,18 +24,18 @@ reference_rotate = [0, 0, 0];
 /* [Ruckus Interface] */
 ruckus_base_length = 93; // [60:0.1:130]
 ruckus_base_width = 24; // [12:0.1:50]
-ruckus_base_thickness = 2; // [1:0.1:4]
+ruckus_base_thickness = 4.4; // [1:0.1:8]
 ruckus_bridge_width = 8; // [4:0.1:20]
 ruckus_raised_bridge_length = 32.25; // [10:0.1:80]
 ruckus_raised_bridge_width = 6; // [3:0.1:20]
-ruckus_raised_bridge_height = 2.4; // [0:0.1:6]
+ruckus_raised_bridge_height = 0; // [0:0.1:6]
 ruckus_prong_spacing = 84.7; // [50:0.1:110]
 ruckus_prong_shaft_diameter = 4; // [2:0.1:8]
-ruckus_prong_shaft_height = 4.5; // [1:0.1:8]
+ruckus_prong_shaft_height = 2.1; // [1:0.1:8]
 ruckus_prong_cap_diameter = 6.7; // [3:0.1:12]
 ruckus_prong_cap_height = 3.5; // [1:0.1:8]
 ruckus_interface_rotation = 90; // [0,90]
-ruckus_mount_z = 0; // [-20:0.1:30]
+ruckus_mount_z = -3; // [-20:0.1:30]
 
 /* [Debug] */
 debug_colors = false; // [false,true]
