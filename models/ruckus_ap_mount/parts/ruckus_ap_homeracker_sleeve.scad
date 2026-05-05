@@ -6,7 +6,7 @@
 part_mode = 3; // [0:Sleeve only,1:Reference STL only,2:Sleeve with reference overlay,3:Prototype mount,4:Prototype with reference overlay]
 sleeve_units = 9; // [3:1:12]
 sleeve_island_count = 1; // [1:One centered island,2:Two end islands]
-sleeve_holes_per_island = 4; // [1:1:8]
+sleeve_holes_per_island = 2; // [1:1:8]
 sleeve_rotation = 90; // [0,90]
 sleeve_wall = 2; // [1.2:0.1:4]
 sleeve_roof_thickness = 3; // [1.6:0.1:6]
@@ -35,8 +35,8 @@ ruckus_prong_cap_height = 3.5; // [1:0.1:8]
 ruckus_interface_rotation = 90; // [0,90]
 ruckus_mount_z = -3; // [-20:0.1:30]
 ruckus_gussets_enabled = true; // [false,true]
-ruckus_gusset_thickness = 3; // [1:0.1:8]
-ruckus_gusset_end_inset = 2; // [0:0.1:10]
+ruckus_gusset_thickness = 8; // [1:0.1:20]
+ruckus_gusset_overhang_angle = 30; // [10:0.1:60]
 
 /* [Debug] */
 debug_colors = false; // [false,true]
@@ -66,7 +66,10 @@ SLEEVE_LOCKPIN_CENTER_Z = BASE_UNIT / 2 + sleeve_tolerance / 2;
 SLEEVE_ISLAND_SIDES = sleeve_island_count == 1 ? [0] : [-1, 1];
 RUCKUS_INTERFACE_BASE_Z = SLEEVE_INNER_SIDE + sleeve_roof_thickness + ruckus_mount_z;
 RUCKUS_GUSSET_INNER_X = SLEEVE_OUTER_WIDTH / 2;
-RUCKUS_GUSSET_OUTER_X = ruckus_base_length / 2 - ruckus_gusset_end_inset;
+RUCKUS_GUSSET_OUTER_X = min(
+    ruckus_base_length / 2,
+    RUCKUS_GUSSET_INNER_X + RUCKUS_INTERFACE_BASE_Z / tan(ruckus_gusset_overhang_angle)
+);
 REFERENCE_CENTER = [62.5, 40, 0];
 
 module centered_box(size) {
@@ -144,9 +147,9 @@ module ruckus_base_outline_2d() {
     square([ruckus_base_length, ruckus_bridge_width], center = true);
 }
 
-module ruckus_drop_gusset(side) {
-    x_inner = side * RUCKUS_GUSSET_INNER_X;
-    x_outer = side * RUCKUS_GUSSET_OUTER_X;
+module ruckus_drop_gusset_positive() {
+    x_inner = RUCKUS_GUSSET_INNER_X;
+    x_outer = RUCKUS_GUSSET_OUTER_X;
     y0 = -ruckus_gusset_thickness / 2;
     y1 = ruckus_gusset_thickness / 2;
     z_bottom = -RUCKUS_INTERFACE_BASE_Z;
@@ -169,6 +172,15 @@ module ruckus_drop_gusset(side) {
             [2, 5, 3, 0]
         ]
     );
+}
+
+module ruckus_drop_gusset(side) {
+    if (side < 0) {
+        mirror([1, 0, 0])
+            ruckus_drop_gusset_positive();
+    } else {
+        ruckus_drop_gusset_positive();
+    }
 }
 
 module ruckus_drop_gussets() {
@@ -221,7 +233,8 @@ module model() {
     assert(ruckus_prong_cap_height > 0, "Ruckus prong cap height must be positive.");
     assert(RUCKUS_INTERFACE_BASE_Z >= 0, "Ruckus interface base must stay at or above global z=0.");
     assert(ruckus_gusset_thickness > 0, "Ruckus gusset thickness must be positive.");
-    assert(RUCKUS_GUSSET_OUTER_X > RUCKUS_GUSSET_INNER_X, "Ruckus gusset inset leaves no gusset span.");
+    assert(ruckus_gusset_overhang_angle > 0 && ruckus_gusset_overhang_angle < 90, "Ruckus gusset overhang angle must be between 0 and 90 degrees.");
+    assert(RUCKUS_GUSSET_OUTER_X > RUCKUS_GUSSET_INNER_X, "Ruckus gusset leaves no horizontal span.");
 
     if (part_mode == 0) {
         homeracker_sleeve();
