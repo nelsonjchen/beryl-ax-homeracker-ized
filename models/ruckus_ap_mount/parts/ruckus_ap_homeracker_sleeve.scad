@@ -36,6 +36,9 @@ ruckus_prong_cap_diameter = 6.7; // [3:0.1:12]
 ruckus_prong_cap_height = 3.5; // [1:0.1:8]
 ruckus_interface_rotation = 90; // [0,90]
 ruckus_mount_z = -3; // [-20:0.1:30]
+ruckus_gussets_enabled = true; // [false,true]
+ruckus_gusset_thickness = 3; // [1:0.1:8]
+ruckus_gusset_end_inset = 2; // [0:0.1:10]
 
 /* [Debug] */
 debug_colors = false; // [false,true]
@@ -62,6 +65,9 @@ SLEEVE_ROOF_SEGMENT_LENGTH = SLEEVE_SEGMENT_LENGTH + 2 * sleeve_roof_overhang;
 SLEEVE_SEGMENT_OFFSET = sleeve_island_count == 1 ? 0 : (sleeve_units - sleeve_holes_per_island) * BASE_UNIT / 2;
 SLEEVE_LOCKPIN_CENTER_Z = BASE_UNIT / 2 + sleeve_tolerance / 2;
 SLEEVE_ISLAND_SIDES = sleeve_island_count == 1 ? [0] : [-1, 1];
+RUCKUS_INTERFACE_BASE_Z = SLEEVE_INNER_SIDE + sleeve_roof_thickness + ruckus_mount_z;
+RUCKUS_GUSSET_INNER_X = SLEEVE_OUTER_WIDTH / 2;
+RUCKUS_GUSSET_OUTER_X = ruckus_base_length / 2 - ruckus_gusset_end_inset;
 REFERENCE_CENTER = [62.5, 40, 0];
 
 module centered_box(size) {
@@ -139,11 +145,47 @@ module ruckus_base_outline_2d() {
     square([ruckus_base_length, ruckus_bridge_width], center = true);
 }
 
+module ruckus_drop_gusset(side) {
+    x_inner = side * RUCKUS_GUSSET_INNER_X;
+    x_outer = side * RUCKUS_GUSSET_OUTER_X;
+    y0 = -ruckus_gusset_thickness / 2;
+    y1 = ruckus_gusset_thickness / 2;
+    z_bottom = -RUCKUS_INTERFACE_BASE_Z;
+
+    color(debug_colors ? REFERENCE_BLUE : "#f5f5f0")
+    polyhedron(
+        points = [
+            [x_inner, y0, z_bottom],
+            [x_inner, y0, 0],
+            [x_outer, y0, 0],
+            [x_inner, y1, z_bottom],
+            [x_inner, y1, 0],
+            [x_outer, y1, 0]
+        ],
+        faces = [
+            [0, 1, 2],
+            [3, 5, 4],
+            [0, 3, 4, 1],
+            [1, 4, 5, 2],
+            [2, 5, 3, 0]
+        ]
+    );
+}
+
+module ruckus_drop_gussets() {
+    if (ruckus_gussets_enabled) {
+        for (side = [-1, 1])
+            ruckus_drop_gusset(side);
+    }
+}
+
 module ruckus_reference_approximation() {
     union() {
         color(debug_colors ? REFERENCE_BLUE : "#f5f5f0")
             linear_extrude(ruckus_base_thickness)
                 ruckus_base_outline_2d();
+
+        ruckus_drop_gussets();
 
         if (ruckus_raised_bridge_height > 0) {
             color(debug_colors ? REFERENCE_BLUE : "#f5f5f0")
@@ -179,6 +221,9 @@ module model() {
     assert(ruckus_prong_shaft_height > 0, "Ruckus prong shaft height must be positive.");
     assert(ruckus_prong_cap_diameter >= ruckus_prong_shaft_diameter, "Ruckus prong cap must be at least as wide as the shaft.");
     assert(ruckus_prong_cap_height > 0, "Ruckus prong cap height must be positive.");
+    assert(RUCKUS_INTERFACE_BASE_Z >= 0, "Ruckus interface base must stay at or above global z=0.");
+    assert(ruckus_gusset_thickness > 0, "Ruckus gusset thickness must be positive.");
+    assert(RUCKUS_GUSSET_OUTER_X > RUCKUS_GUSSET_INNER_X, "Ruckus gusset inset leaves no gusset span.");
 
     if (part_mode == 0) {
         homeracker_sleeve();
