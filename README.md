@@ -3,9 +3,8 @@
 An OpenSCAD model for adapting a GL.iNet Beryl AX holster to a HomeRacker bar.
 
 This repo is being rebuilt around the Beryl AX holster STL in `reference/`.
-The current OpenSCAD source is intentionally blank except for importing that STL,
-so the model can be carved and wrapped with HomeRacker-compatible geometry in
-small passes.
+The current OpenSCAD source imports that STL at the correct millimeter scale and
+grafts a centered HomeRacker sleeve onto the bottom.
 
 ## Tooling
 
@@ -38,17 +37,17 @@ Main source:
 models/beryl_ax_homeracker_sleeve/parts/beryl_ax_homeracker_sleeve.scad
 ```
 
-The model will follow HomeRacker conventions where practical: 15 mm base units,
+The model follows HomeRacker conventions where practical: 15 mm base units,
 2 mm walls, 0.2 mm tolerance, 4 mm lock-pin holes, and OpenSCAD Customizer
-sections. For now, the source exposes only STL import transform controls:
-`reference_alpha`, `reference_scale`, `reference_translate`, and
-`reference_rotate`.
+sections.
 
 Current source scaffold:
 
 - Imports `reference/GL-INET-BERYL-AX-HOLSTER.stl`
-- Provides transform controls for aligning the imported mesh
-- Leaves all subtractive cuts and HomeRacker sleeve geometry for follow-up edits
+- Scales the imported mesh by `1000` so it matches the slicer dimensions
+- Adds a bottom-mounted HomeRacker sleeve with 5 side and roof lock-pin hole positions
+- Projects the HomeRacker channel clearance upward through the holster
+- Provides controls for sleeve rotation, wall thickness, roof thickness, XY offset, embed depth, and the upward channel cut
 
 ## Attribution And License
 
