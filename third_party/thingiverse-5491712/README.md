@@ -1,10 +1,13 @@
 # Cisco AIR-AP-BRACKET-1 Reference
 
-This folder contains the upstream reference model used for the Cisco AP slider-hole dimensions and recessed two-layer plate behavior.
+This folder preserves the upstream reference model that was used by the earlier
+Cisco AP HomeRacker mount for slider-hole dimensions and recessed two-layer
+plate behavior.
 
 - Model: Cisco AIR-AP-BRACKET-1
 - Author: nicba1010
 - Source: https://www.thingiverse.com/thing:5491712
 - License: BSD license, as stated by the source model
 
-The project model in `models/cisco_ap_mount/parts/` changes the surrounding bracket, HomeRacker mount interface, and ventilation pattern.
+The active Ruckus sleeve scaffold does not use this geometry, but the source
+copy is retained for attribution history.

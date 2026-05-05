@@ -1,8 +1,11 @@
-# Cisco AP HomeRacker Mount
+# Ruckus AP HomeRacker Mount
 
-An OpenSCAD model for mounting Cisco wireless access points to a HomeRacker bar.
+An OpenSCAD model for mounting Ruckus wireless access points to a HomeRacker bar.
 
-The current printable part is a low-profile skeleton plate with four Cisco AIR-AP-BRACKET-1-style recessed slider/keyhole holes and a segmented HomeRacker sleeve. The center of the mount is left open for airflow and material savings; only the two sleeve segments at the ends remain, each with two lock-pin holes for mounting to a single 15 mm HomeRacker support/bar.
+This repo is being rebuilt from the earlier Cisco AP mount. The current printable
+part is only the segmented HomeRacker sleeve: two sleeve sections sized around a
+15 mm HomeRacker support/bar, each with two 4 mm lock-pin holes. The Ruckus
+AP-facing geometry will be derived later from the STL reference in `reference/`.
 
 ## Tooling
 
@@ -21,12 +24,13 @@ Useful targets:
 - `make install`: install OpenSCAD and SCAD dependencies through `uv run scadm install`
 - `make check`: check the scadm-managed OpenSCAD/dependency install
 - `make render`: render the default `sleeve_rotation = 90` STL
-- `make render-rotation0`: render the earlier sleeve orientation STL
-- `make render-rotation90`: render the alternate sleeve orientation STL
+- `make render-rotation0`: render the sleeve in the original rail orientation
+- `make render-rotation90`: render the sleeve in the alternate rail orientation
+- `make render-prototype`: render the current Ruckus-prong prototype mount
 - `make render-all`: render both orientation STLs
-- `make render-clips`: render the two-piece clip pair plus individual left/right clip STLs
 - `make png`: create a local preview PNG for `sleeve_rotation = 90` in `renders/`
-- `make build`: run the full bootstrap flow and render both full-mount orientation STLs, clip STLs, and the preview PNG
+- `make png-views`: render reference, prototype, and overlay inspection PNGs
+- `make build`: run the full bootstrap flow and render sleeve/prototype STLs plus inspection PNGs
 - `make clean`: remove generated render/export files
 
 Generated renders and export files are intentionally ignored by Git.
@@ -36,42 +40,28 @@ Generated renders and export files are intentionally ignored by Git.
 Main source:
 
 ```text
-models/cisco_ap_mount/parts/cisco_ap_homeracker_mount.scad
+models/ruckus_ap_mount/parts/ruckus_ap_homeracker_sleeve.scad
 ```
 
-The model follows HomeRacker conventions where practical: 15 mm base units, 2 mm walls, 0.2 mm tolerance, 4 mm lock-pin holes, OpenSCAD Customizer sections, and BOSL2-style chamfered geometry.
+The model follows HomeRacker conventions where practical: 15 mm base units,
+2 mm walls, 0.2 mm tolerance, 4 mm lock-pin holes, and OpenSCAD Customizer
+sections.
 
-Current fit settings from print testing:
+Current sleeve settings:
 
-- Full-frame mount small slider diameter: `6.6` mm
-- Full-frame mount detent depth: `0.25` mm
-- Two-piece clip small slider diameter: `6.42` mm
-- Two-piece clip detent depth: `0.4` mm
-- Plate thickness: `3` mm total, with a `1` mm top lip/recess layer
-- Sleeve: `9` HomeRacker units overall, with `2` pin holes per end segment
-- Sleeve orientation: `sleeve_rotation = 90` mounts the HomeRacker sleeve on the alternate rail pair; set it to `0` for the earlier orientation
-- Part mode: `part_mode = 0` renders the full mount, `1` renders a two-piece pair, `2` renders the left clip, and `3` renders the right clip
-
-The production model engraves `CISCO AP HOMERACKER`, `S6.6`, and `D0.25` into the top surface so printed parts carry their fit settings.
-
-## Two-Piece Clips
-
-The two-piece clip mode splits the mount into left/right clips, each carrying two Cisco AP keyholes, one HomeRacker sleeve segment, and two lock-pin holes. The pair STL lays the clips next to each other for slicer import, not at installed AP spacing. The pieces are intentionally labeled with side, the `CISCO AP HOMERACKER` mount name split across the rails, and their tighter standalone `S6.42 D0.4` fit settings so each loose part remains identifiable during installation.
-
-The clips do not mechanically prevent being pinned in the wrong HomeRacker holes; if spacing is wrong, move the clip to a different hole pair and retry the AP slide fit.
-
-## Fit Coupons
-
-Test coupon source:
-
-```text
-models/cisco_ap_mount/test/keyhole_fit_coupon.scad
-```
-
-The coupon matrix varies the small slider diameter and detent depth so the AP fit can be tested quickly before printing the full mount. The coupon uses the same `3` mm total thickness and `1` mm top lip/recess layer as the production bracket.
+- Sleeve: one centered HomeRacker island by default, with `4` lock-pin positions
+- Sleeve orientation: `sleeve_rotation = 90` mounts the sleeve on the alternate rail pair; set it to `0` for the original orientation
+- Ruckus interface orientation: `ruckus_interface_rotation = 90` turns the prong pair perpendicular to the sleeve island
+- STL reference overlay: use `part_mode = 2` for sleeve plus reference, or `part_mode = 4` for prototype plus reference
+- Ruckus prong centers, measured from the STL: `84.7` mm apart
+- Ruckus prong shaft, measured from the STL: `4` mm diameter by `4.5` mm tall
+- Ruckus prong cap, measured from the STL: `6.7` mm diameter by `3.5` mm tall
+- Ruckus reference mesh bounding box: about `93 x 24 x 10` mm
 
 ## Attribution And License
 
 This project is released under the Creative Commons Attribution-ShareAlike 4.0 International license: <https://creativecommons.org/licenses/by-sa/4.0/>.
 
-The Cisco AP slider-hole dimensions and recessed two-layer slider-hole behavior are based on `third_party/thingiverse-5491712/AIR-AP-BRACKET-1.scad`, from Thingiverse thing 5491712, "Cisco AIR-AP-BRACKET-1" by nicba1010, published under a BSD license. See `NOTICE` for third-party attribution.
+This repository was bootstrapped from an earlier Cisco AP HomeRacker mount.
+The historical Cisco AIR-AP-BRACKET-1 attribution is retained in `NOTICE` and
+`third_party/thingiverse-5491712/`.

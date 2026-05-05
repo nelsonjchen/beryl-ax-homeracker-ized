@@ -19,8 +19,8 @@
   ],
   "flatten": [
     {
-      "src": "models/cisco_ap_mount/parts",
-      "dest": "models/cisco_ap_mount/flattened"
+      "src": "models/ruckus_ap_mount/parts",
+      "dest": "models/ruckus_ap_mount/flattened"
     }
   ]
 }
