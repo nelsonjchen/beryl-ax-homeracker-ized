@@ -7,6 +7,9 @@ a bottom-mounted HomeRacker sleeve, projects the HomeRacker channel clearance up
 through the holster, and includes a small side window for the device status
 light.
 
+This is an OpenSCAD modification of the exported STL, not an edit of the
+upstream Onshape CAD document.
+
 ## Preview
 
 ![Beryl AX HomeRacker sleeve overview](docs/images/beryl_ax_homeracker_sleeve_overview.png)
@@ -71,6 +74,11 @@ Reference mesh:
 reference/GL-INET-BERYL-AX-HOLSTER.stl
 ```
 
+Upstream holster references:
+
+- MakerWorld: [`GL-INET-BERYL-AX-HOLSTER` by `DunknDonuts`](https://makerworld.com/en/models/428474-gl-inet-beryl-ax-holster)
+- Source CAD: [Onshape document](https://cad.onshape.com/documents/4fd11188d706b52e56b15526/w/7970faa89563f7f57c9aa723/e/5b438853887219bc6ade6645)
+
 Historical third-party reference material is retained under
 `third_party/thingiverse-5491712/` for attribution context.
 
@@ -121,8 +129,13 @@ OpenSCAD should report the rendered model as manifold. Inspect
 
 ## License
 
-This project is released under the Creative Commons Attribution-ShareAlike 4.0
-International license. See `LICENSE`.
+This project's original OpenSCAD/HomeRacker adaptation work is released under
+the Creative Commons Attribution-ShareAlike 4.0 International license. See
+`LICENSE`.
+
+The imported Beryl AX holster STL and linked Onshape CAD are third-party source
+materials by `DunknDonuts` and remain subject to their upstream terms. See
+`NOTICE` before redistributing release artifacts.
 
 This repository was bootstrapped from an earlier Cisco AP HomeRacker mount.
 Historical attribution for the Cisco AIR-AP-BRACKET-1 reference is retained in

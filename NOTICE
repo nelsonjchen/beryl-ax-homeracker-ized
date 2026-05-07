@@ -1,6 +1,23 @@
 Third-party attribution
 =======================
 
+GL-INET-BERYL-AX-HOLSTER
+------------------------
+
+This repository imports and modifies an exported STL of:
+
+- "GL-INET-BERYL-AX-HOLSTER" by DunknDonuts
+- MakerWorld: https://makerworld.com/en/models/428474-gl-inet-beryl-ax-holster
+- Source CAD: https://cad.onshape.com/documents/4fd11188d706b52e56b15526/w/7970faa89563f7f57c9aa723/e/5b438853887219bc6ade6645
+- Local reference file: reference/GL-INET-BERYL-AX-HOLSTER.stl
+
+The active OpenSCAD model imports the STL, scales it to millimeters, subtracts
+and unions additional geometry, and adds HomeRacker-compatible sleeve features.
+It does not edit the upstream Onshape CAD document.
+
+Cisco AIR-AP-BRACKET-1 history
+------------------------------
+
 This repository was bootstrapped from an earlier Cisco AP HomeRacker mount.
 That original project was inspired by and used dimensions from:
 

@@ -7,6 +7,11 @@ bottom-mounted 5-hole HomeRacker sleeve, reinforces the top of the channel,
 projects channel clearance upward through the holster, and cuts a small
 pill-shaped light window in the `+Y` side wall.
 
+The imported holster STL is based on
+[`GL-INET-BERYL-AX-HOLSTER` by `DunknDonuts`](https://makerworld.com/en/models/428474-gl-inet-beryl-ax-holster).
+This model modifies that exported STL through OpenSCAD; it does not edit the
+upstream Onshape source CAD.
+
 Build from the repository root:
 
 ```sh

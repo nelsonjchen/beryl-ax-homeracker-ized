@@ -1,6 +1,7 @@
 Creative Commons Attribution-ShareAlike 4.0 International
 
-This project is licensed under CC BY-SA 4.0:
+This project's original OpenSCAD/HomeRacker adaptation work is licensed under
+CC BY-SA 4.0:
 
 https://creativecommons.org/licenses/by-sa/4.0/
 
@@ -9,3 +10,5 @@ provided you give appropriate credit and distribute adaptations under the same
 license.
 
 See NOTICE for third-party attribution and retained upstream license context.
+Imported reference meshes and linked source CAD remain subject to their upstream
+terms.
