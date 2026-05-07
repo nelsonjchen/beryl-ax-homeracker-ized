@@ -46,8 +46,10 @@ Current source scaffold:
 - Imports `reference/GL-INET-BERYL-AX-HOLSTER.stl`
 - Scales the imported mesh by `1000` so it matches the slicer dimensions
 - Adds a bottom-mounted HomeRacker sleeve with 5 side and roof lock-pin hole positions
+- Adds a 2.8 mm top reinforcement frame around the channel opening
 - Projects the HomeRacker channel clearance upward through the holster
-- Provides controls for sleeve rotation, wall thickness, roof thickness, XY offset, embed depth, and the upward channel cut
+- Cuts a small pill-shaped light window into the `+Y` side wall
+- Provides controls for sleeve rotation, wall thickness, roof thickness, XY offset, embed depth, top reinforcement, light window, and the upward channel cut
 
 ## Attribution And License
 
