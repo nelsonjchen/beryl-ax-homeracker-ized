@@ -1,60 +1,129 @@
 # Beryl AX HomeRacker Sleeve
 
-An OpenSCAD model for adapting a GL.iNet Beryl AX holster to a HomeRacker bar.
+OpenSCAD source for adapting a GL.iNet Beryl AX holster to a HomeRacker bar.
 
-This repo is being rebuilt around the Beryl AX holster STL in `reference/`.
-The current OpenSCAD source imports that STL at the correct millimeter scale and
-grafts a centered HomeRacker sleeve onto the bottom.
+The model imports the Beryl AX holster reference mesh at millimeter scale, adds
+a bottom-mounted HomeRacker sleeve, projects the HomeRacker channel clearance up
+through the holster, and includes a small side window for the device status
+light.
 
-## Tooling
+## Preview
 
-This repo uses `uv` for Python tooling and `scadm` for OpenSCAD setup, dependency installation, flattening, and render validation.
+![Beryl AX HomeRacker sleeve overview](docs/images/beryl_ax_homeracker_sleeve_overview.png)
+
+![Underside view showing the HomeRacker sleeve graft](docs/images/beryl_ax_homeracker_sleeve_underside.png)
+
+![Sleeve-only detail showing lock-pin holes and top reinforcement](docs/images/beryl_ax_homeracker_sleeve_detail.png)
+
+## Status
+
+This is a printable prototype intended for fit testing and iteration. Generated
+STLs and preview PNGs are not tracked; rebuild them locally from the OpenSCAD
+source.
+
+## Requirements
+
+- `make`
+- `uv`
+
+OpenSCAD and SCAD library dependencies are installed and checked through
+`scadm`.
+
+## Quick Start
 
 ```sh
 make sync
 make install
-make render
-make png
+make build
 ```
 
-Useful targets:
+The default build writes:
+
+- `renders/beryl_ax_homeracker_sleeve.stl`
+- `renders/beryl_ax_homeracker_sleeve.png`
+
+Curated README preview images are kept under `docs/images/`.
+
+## Tooling
+
+This repo uses `uv` for Python tooling and `scadm` for OpenSCAD setup and
+dependency management.
 
 - `make sync`: install Python tooling into `.venv/`
 - `make install`: install OpenSCAD and SCAD dependencies through `uv run scadm install`
 - `make check`: check the scadm-managed OpenSCAD/dependency install
-- `make render`: render the imported Beryl AX holster STL through OpenSCAD
-- `make png`: create a local preview PNG in `renders/`
-- `make build`: run the full bootstrap flow and render the STL plus preview PNG
+- `make render`: render the complete modified sleeve model to STL
+- `make png`: render a preview PNG
+- `make build`: run setup and render both STL and PNG outputs
 - `make clean`: remove generated render/export files
 
-Generated renders and export files are intentionally ignored by Git.
+## Source Layout
 
-## Model
-
-Main source:
+Main OpenSCAD source:
 
 ```text
 models/beryl_ax_homeracker_sleeve/parts/beryl_ax_homeracker_sleeve.scad
 ```
 
-The model follows HomeRacker conventions where practical: 15 mm base units,
-2 mm walls, 0.2 mm tolerance, 4 mm lock-pin holes, and OpenSCAD Customizer
-sections.
+Reference mesh:
 
-Current source scaffold:
+```text
+reference/GL-INET-BERYL-AX-HOLSTER.stl
+```
+
+Historical third-party reference material is retained under
+`third_party/thingiverse-5491712/` for attribution context.
+
+## Current Model
 
 - Imports `reference/GL-INET-BERYL-AX-HOLSTER.stl`
-- Scales the imported mesh by `1000` so it matches the slicer dimensions
-- Adds a bottom-mounted HomeRacker sleeve with 5 side and roof lock-pin hole positions
-- Adds a 2.8 mm top reinforcement frame around the channel opening
+- Scales the imported mesh by `1000` so it matches slicer dimensions
+- Adds a 5-hole HomeRacker sleeve along the bottom
+- Cuts matching 4 mm lock-pin holes through the sleeve side walls and roof
+- Adds a top reinforcement frame around the sleeve channel opening
 - Projects the HomeRacker channel clearance upward through the holster
-- Cuts a small pill-shaped light window into the `+Y` side wall
-- Provides controls for sleeve rotation, wall thickness, roof thickness, XY offset, embed depth, top reinforcement, light window, and the upward channel cut
+- Cuts a pill-shaped light window into the `+Y` side wall
 
-## Attribution And License
+## Key Parameters
 
-This project is released under the Creative Commons Attribution-ShareAlike 4.0 International license: <https://creativecommons.org/licenses/by-sa/4.0/>.
+The model is OpenSCAD Customizer-friendly. The most useful controls are listed
+below. Defaults are shown as the SCAD expressions used in source.
+
+| Parameter | Default | Purpose |
+| --- | ---: | --- |
+| `part_mode` | `0` | `0` complete model, `1` holster/reference only, `2` sleeve only |
+| `sleeve_holes` | `5` | Number of HomeRacker lock-pin positions |
+| `sleeve_rotation` | `90` | Sleeve orientation in degrees |
+| `sleeve_wall` | `2` | Sleeve side-wall thickness |
+| `sleeve_roof_thickness` | `2` | Sleeve roof thickness |
+| `sleeve_embed_depth` | `0-2.8` | Vertical sleeve placement relative to the holster bottom |
+| `top_reinforcement_wall` | `2` | Wall thickness of the reinforcement frame |
+| `top_reinforcement_height` | `5+2.8` | Height of the reinforcement frame |
+| `light_window_center` | `[0, 50, 20]` | Center point of the pill-shaped light window |
+| `light_window_width` | `18` | Horizontal pill-window width |
+| `light_window_height` | `8` | Pill-window height |
+| `light_window_depth` | `18` | Cutter depth through the side wall |
+
+HomeRacker conventions used here include 15 mm base units, 0.2 mm tolerance,
+and 4 mm lock-pin holes.
+
+## Release Checklist
+
+Before publishing a release artifact:
+
+```sh
+make build
+```
+
+OpenSCAD should report the rendered model as manifold. Inspect
+`renders/beryl_ax_homeracker_sleeve.png`, then use
+`renders/beryl_ax_homeracker_sleeve.stl` as the export artifact.
+
+## License
+
+This project is released under the Creative Commons Attribution-ShareAlike 4.0
+International license. See `LICENSE`.
 
 This repository was bootstrapped from an earlier Cisco AP HomeRacker mount.
-The historical Cisco AIR-AP-BRACKET-1 attribution is retained in `NOTICE` and
-`third_party/thingiverse-5491712/`.
+Historical attribution for the Cisco AIR-AP-BRACKET-1 reference is retained in
+`NOTICE` and `third_party/thingiverse-5491712/`.

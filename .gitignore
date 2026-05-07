@@ -16,5 +16,6 @@ renders/
 *.amf
 *.off
 *.png
+!docs/images/*.png
 
 reference/
