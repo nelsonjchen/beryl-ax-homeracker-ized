@@ -4,8 +4,9 @@ Model-local source for the GL.iNet Beryl AX HomeRacker sleeve.
 
 The OpenSCAD part imports the Beryl AX holster STL from `reference/`, adds a
 bottom-mounted 5-hole HomeRacker sleeve, reinforces the top of the channel,
-projects channel clearance upward through the holster, and cuts a small
-pill-shaped light window in the `+Y` side wall.
+projects channel clearance upward through the holster for cooling and optional
+lock-pin access, and cuts a small pill-shaped light window in the `+Y` side
+wall.
 
 The imported holster STL is based on
 [`GL-INET-BERYL-AX-HOLSTER` by `DunknDonuts`](https://makerworld.com/en/models/428474-gl-inet-beryl-ax-holster).

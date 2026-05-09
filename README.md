@@ -1,28 +1,31 @@
 # Beryl AX HomeRacker Sleeve
 
-OpenSCAD source for adapting a GL.iNet Beryl AX holster to a HomeRacker bar.
+[OpenSCAD](https://openscad.org/) source for adapting a
+[GL.iNet Beryl AX](https://www.gl-inet.com/products/gl-mt3000/) holster to a
+[HomeRacker](https://github.com/kellerlabs/homeracker) bar.
 
-The model imports the Beryl AX holster reference mesh at millimeter scale, adds
-a bottom-mounted HomeRacker sleeve, projects the HomeRacker channel clearance up
-through the holster, and includes a small side window for the device status
-light.
+The model imports [`GL-INET-BERYL-AX-HOLSTER.stl`](reference/GL-INET-BERYL-AX-HOLSTER.stl)
+at millimeter scale, adds a bottom-mounted HomeRacker sleeve, projects the
+HomeRacker channel clearance up through the holster for cooling and optional
+pin access, and includes a small side window for the device status light.
 
-This is an OpenSCAD modification of the exported STL, not an edit of the
-upstream Onshape CAD document.
+This is an OpenSCAD modification of the exported STL from
+[`GL-INET-BERYL-AX-HOLSTER` by `DunknDonuts`](https://makerworld.com/en/models/428474-gl-inet-beryl-ax-holster),
+not an edit of the upstream
+[Onshape source CAD](https://cad.onshape.com/documents/4fd11188d706b52e56b15526/w/7970faa89563f7f57c9aa723/e/5b438853887219bc6ade6645).
+
+## Status
+
+This is currently in a rack I use for transporting a setup portably.
+
+Published print profile:
+[Beryl AX HomeRacker Sleeve on MakerWorld](https://makerworld.com/en/models/2776106-beryl-ax-homeracker-sleeve#profileId-3084506)
 
 ## Preview
 
 ![Beryl AX HomeRacker sleeve overview](docs/images/beryl_ax_homeracker_sleeve_overview.png)
 
 ![Underside view showing the HomeRacker sleeve graft](docs/images/beryl_ax_homeracker_sleeve_underside.png)
-
-![Sleeve-only detail showing lock-pin holes and top reinforcement](docs/images/beryl_ax_homeracker_sleeve_detail.png)
-
-## Status
-
-This is a printable prototype intended for fit testing and iteration. Generated
-STLs and preview PNGs are not tracked; rebuild them locally from the OpenSCAD
-source.
 
 ## Requirements
 
@@ -46,6 +49,20 @@ The default build writes:
 - `renders/beryl_ax_homeracker_sleeve.png`
 
 Curated README preview images are kept under `docs/images/`.
+
+## GitHub Release STL
+
+GitHub Actions renders `renders/beryl_ax_homeracker_sleeve.stl` on every push
+and pull request, then uploads it as a workflow artifact.
+
+To publish a release STL, push a version tag:
+
+```sh
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The workflow creates or updates that GitHub Release and attaches the STL.
 
 ## Tooling
 
@@ -86,7 +103,7 @@ Upstream holster references:
 - Adds a 5-hole HomeRacker sleeve along the bottom
 - Cuts matching 4 mm lock-pin holes through the sleeve side walls and roof
 - Adds a top reinforcement frame around the sleeve channel opening
-- Projects the HomeRacker channel clearance upward through the holster
+- Projects the HomeRacker channel clearance upward through the holster for cooling and optional lock-pin access
 - Cuts a pill-shaped light window into the `+Y` side wall
 
 ## Key Parameters
@@ -130,5 +147,6 @@ The HomeRacker sleeve and OpenSCAD adaptation work in this repository are
 released under the Creative Commons Attribution-ShareAlike 4.0 International
 license. See `LICENSE`.
 
-The base Beryl AX holster design is `GL-INET-BERYL-AX-HOLSTER` by
-`DunknDonuts`. See `NOTICE` for source attribution.
+The base Beryl AX holster design is
+[`GL-INET-BERYL-AX-HOLSTER` by `DunknDonuts`](https://makerworld.com/en/models/428474-gl-inet-beryl-ax-holster).
+See `NOTICE` for source attribution.

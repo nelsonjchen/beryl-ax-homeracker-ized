@@ -16,5 +16,5 @@
 ## Licensing
 
 - The HomeRacker sleeve and OpenSCAD adaptation work in this repository are intended to be CC BY-SA 4.0.
-- Preserve attribution for the GL-INET-BERYL-AX-HOLSTER source by DunknDonuts. Do not remove `NOTICE` or source comments that identify the holster source.
+- Preserve attribution for `GL-INET-BERYL-AX-HOLSTER` by DunknDonuts: https://makerworld.com/en/models/428474-gl-inet-beryl-ax-holster. Do not remove `NOTICE` or source comments that identify the holster source.
 - The HomeRacker dependency contains MIT-licensed code and CC BY-SA models; keep upstream notices intact when copying or adapting code.
