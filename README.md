@@ -1,5 +1,7 @@
 # Beryl AX HomeRacker Sleeve
 
+[![Build STL](https://github.com/nelsonjchen/beryl-ax-homeracker-ized/actions/workflows/build-stl.yml/badge.svg)](https://github.com/nelsonjchen/beryl-ax-homeracker-ized/actions/workflows/build-stl.yml)
+
 [OpenSCAD](https://openscad.org/) source for adapting a
 [GL.iNet Beryl AX](https://www.gl-inet.com/products/gl-mt3000/) holster to a
 [HomeRacker](https://github.com/kellerlabs/homeracker) bar.
