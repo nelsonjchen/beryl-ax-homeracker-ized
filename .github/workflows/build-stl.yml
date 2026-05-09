@@ -21,16 +21,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v5
-
       - name: Install OpenSCAD and SCAD dependencies
-        run: make sync install
+        uses: kellerlabs/homeracker/.github/actions/setup-openscad@setup-openscad-v2
+        with:
+          scadm-version: "0.7.0"
 
       - name: Render STL
         run: make render
