@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install OpenSCAD and SCAD dependencies
-        uses: kellerlabs/homeracker/.github/actions/setup-openscad@setup-openscad-v2
+        uses: kellerlabs/homeracker/.github/actions/setup-openscad@setup-openscad-v2.1.0
         with:
           scadm-version: "0.7.0"
 
