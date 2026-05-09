@@ -21,6 +21,9 @@ This is currently in a rack I use for transporting a setup portably.
 Published print profile:
 [Beryl AX HomeRacker Sleeve on MakerWorld](https://makerworld.com/en/models/2776106-beryl-ax-homeracker-sleeve#profileId-3084506)
 
+GitHub releases:
+[beryl-ax-homeracker-ized releases](https://github.com/nelsonjchen/beryl-ax-homeracker-ized/releases)
+
 ## Preview
 
 ![Beryl AX HomeRacker sleeve overview](docs/images/beryl_ax_homeracker_sleeve_overview.png)
